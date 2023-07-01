@@ -5,11 +5,11 @@ import headerData from '../fixtures/headerData.json'
 
 test.describe('US_11.03.05 | Educations > Menu item [Swing Trading]', () => {
     test.beforeEach(async ({ page }) => {
-        
         // open capital.com
         await page.goto('/')
-        // header.clickEducationMenu();
-        // basePage.clickSwingTradingOnEducationMenu();
+        // select language
+        await page.locator('div .licLangSw__btn').hover();
+        await page.locator("[href='https://capital.com/']", {hasText: 'English'}).click()
     });
 
     test('Chech route on Education Menu', async ( { page }) => {
