@@ -8,7 +8,7 @@
     ],
 
     "endPointsMenuItems": [
-        "/learn-to-trade",
+        "it/learn-to-trade",
         "/derivative-financial-instruments",
         "/trading-products",
         "/financial-news-articles",
