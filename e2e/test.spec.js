@@ -22,7 +22,7 @@ test.describe('US_11.03.05 | Educations > Menu item [Swing Trading]', () => {
         await expect(title).toContainText('Bildungshub')
     })
 
-    test.only('Ckick on Swing Trading', async ({ page }) => {
+    test('Ckick on Swing Trading', async ({ page }) => {
         await test.step('Hover on Education menu', async () => {
             const header = new Header(page);
             await header.getEducationMenu.hover();
