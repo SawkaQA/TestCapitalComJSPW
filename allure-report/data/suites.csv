@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Sat Jul 15 20:22:49 MSK 2023","Sat Jul 15 20:22:51 MSK 2023","2173","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Chech route on Education Menu",""
+"failed","Sat Jul 15 20:22:51 MSK 2023","Sat Jul 15 20:22:58 MSK 2023","6690","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Click on Swing Trading",""
