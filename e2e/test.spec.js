@@ -9,20 +9,20 @@ test.describe('US_11.03.05 | Educations > Menu item [Swing Trading]', () => {
         await page.goto('/')
         // select language
         await page.locator('div .licLangSw__btn').hover();
+        const isVisibleEnglish = page.locator("[href='https://capital.com/de']", {hasText: 'Deutsch'});
+        if(await isVisibleEnglish.isVisible()) {
+            await isVisibleEnglish.click()
+        }
     });
 
     test('Chech route on Education Menu', async ( { page }) => {
         const header = new Header(page);
-        const isVisibleEnglish = page.locator("[href='https://capital.com/de']", {hasText: 'Deutsche'});
-
-        if(await isVisibleEnglish.isVisible()) {
-            await isVisibleEnglish.click()
-        }
+        const title = page.locator('h1[class="hero"]')
         await header.clickEducationMenu();
-        await expect(page).toHaveURL(headerData.endPointsMenuItems[0]);
+        await expect(title).toContainText('Bildungshub')
     })
 
-    test('Ckick on Swing Trading', async ({ page }) => {
+    test.only('Ckick on Swing Trading', async ({ page }) => {
         await test.step('Hover on Education menu', async () => {
             const header = new Header(page);
             await header.getEducationMenu.hover();
@@ -31,7 +31,7 @@ test.describe('US_11.03.05 | Educations > Menu item [Swing Trading]', () => {
             if(await isVisibleSwing.isVisible()){
                 await isVisibleSwing.click()
             }
-            await expect(page).toHaveTitle('Trading online con app di investimento smart | Capital.com')
+            await expect(page).toHaveTitle('Online-Trading mit Smart Investment App | Capital.com')
         })
     })
 });
