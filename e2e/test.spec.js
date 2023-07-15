@@ -9,7 +9,7 @@ test.describe('US_11.03.05 | Educations > Menu item [Swing Trading]', () => {
         await page.goto('/')
         // select language
         await page.locator('div .licLangSw__btn').hover();
-        const isVisibleEnglish = page.locator("[href='https://capital.com/de']", {hasText: 'Deutsch'});
+        const isVisibleEnglish = page.locator("[href='https://capital.com/']", {hasText: 'English'});
         if(await isVisibleEnglish.isVisible()) {
             await isVisibleEnglish.click()
         }
@@ -22,16 +22,18 @@ test.describe('US_11.03.05 | Educations > Menu item [Swing Trading]', () => {
         await expect(title).toContainText('Bildungshub')
     })
 
-    test('Ckick on Swing Trading', async ({ page }) => {
+    test('Click on Swing Trading', async ({ page }) => {
         await test.step('Hover on Education menu', async () => {
             const header = new Header(page);
             await header.getEducationMenu.hover();
             const isVisibleSwing = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/swing-trading"]')
+            const title = page.locator('h1')
+            console.log(title)
 
             if(await isVisibleSwing.isVisible()){
                 await isVisibleSwing.click()
             }
-            await expect(page).toHaveTitle('Online-Trading mit Smart Investment App | Capital.com')
+            await expect(title).toContainText('Swing trading strategy: An educational guide')
         })
     })
 });
