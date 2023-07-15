@@ -28,7 +28,6 @@ test.describe('US_11.03.05 | Educations > Menu item [Swing Trading]', () => {
             await header.getEducationMenu.hover();
             const isVisibleSwing = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/swing-trading"]')
             const title = page.locator('h1')
-            console.log(title)
 
             if(await isVisibleSwing.isVisible()){
                 await isVisibleSwing.click()
