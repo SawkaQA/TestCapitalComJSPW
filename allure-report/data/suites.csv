@@ -1,3 +1,7 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Sat Jul 15 20:22:49 MSK 2023","Sat Jul 15 20:22:51 MSK 2023","2173","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Chech route on Education Menu",""
+"failed","Sat Jul 15 20:52:20 MSK 2023","Sat Jul 15 20:52:28 MSK 2023","8201","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Click on Swing Trading ddsds on English",""
 "failed","Sat Jul 15 20:22:51 MSK 2023","Sat Jul 15 20:22:58 MSK 2023","6690","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Click on Swing Trading",""
+"passed","Sat Jul 15 20:22:49 MSK 2023","Sat Jul 15 20:22:51 MSK 2023","2173","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Chech route on Education Menu",""
+"failed","Sat Jul 15 20:52:37 MSK 2023","Sat Jul 15 20:52:45 MSK 2023","7597","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Click on Swing Trading ddsds on العَرَبِيَّة",""
+"failed","Sat Jul 15 20:52:11 MSK 2023","Sat Jul 15 20:52:20 MSK 2023","8872","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Chech route on Education Menu on English",""
+"failed","Sat Jul 15 20:52:28 MSK 2023","Sat Jul 15 20:52:37 MSK 2023","8548","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Chech route on Education Menu on العَرَبِيَّة",""
