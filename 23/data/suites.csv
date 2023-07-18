@@ -1,0 +1,6 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Jul 18 17:56:29 GMT 2023","Tue Jul 18 17:56:32 GMT 2023","3437","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Click on Swing Trading ddsds on العَرَبِيَّة",""
+"passed","Tue Jul 18 17:56:20 GMT 2023","Tue Jul 18 17:56:25 GMT 2023","4955","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Click on Swing Trading ddsds on English",""
+"passed","Tue Jul 18 17:56:25 GMT 2023","Tue Jul 18 17:56:29 GMT 2023","4080","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Chech route on Education Menu on العَرَبِيَّة",""
+"failed","Tue Jul 18 17:56:56 GMT 2023","Tue Jul 18 17:57:06 GMT 2023","10052","chromium","","US_11.03.04_UnReg | Educations > Menu item [Position Trading]","","","TC_11.03.04_01_UnReg | Education > Menu Item [Position Trading] > Test button [Log in] in the header",""
+"passed","Tue Jul 18 17:56:16 GMT 2023","Tue Jul 18 17:56:20 GMT 2023","4384","chromium","","US_11.03.05 | Educations > Menu item [Swing Trading]","","","Chech route on Education Menu on English",""
