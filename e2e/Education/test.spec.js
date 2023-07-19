@@ -4,6 +4,8 @@ const { Header } = require("../../pages/header");
 // import headerData from "../../fixtures/headerData.json";
 
 test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
+
+    let header;
     const languages = [
         {
             langName: "English",
@@ -16,6 +18,7 @@ test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
     ];
 
     test.beforeEach(async ({ page }) => {
+        header = new Header(page);
         // open capital.com
         await page.goto("/");
         await page.locator("div .licLangSw__btn").hover();
@@ -25,7 +28,7 @@ test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
         test(`Check route on Education Menu on ${language.langName}`, async ({
             page,
         }) => {
-            const header = new Header(page);
+            // const header = new Header(page);
             await page.locator(language.langUrl).click();
             await header.clickEducationMenu();
         });
@@ -34,7 +37,7 @@ test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
             page,
         }) => {
             await test.step("Hover on Education menu and select language", async () => {
-                const header = new Header(page);
+                // const header = new Header(page);
                 await page.locator(language.langUrl).click();
                 await header.getEducationMenu.hover();
                 const isVisibleSwing = page.locator(
