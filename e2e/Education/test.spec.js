@@ -38,7 +38,7 @@ test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
                 } else {
                     await test.step("Check visible links on page for languages", async () => {
                         console.log(
-                            `For test language the page "Education->Position Trading" doesn't exist on production`
+                            `For test language the page "Education->Swing Trading" doesn't exist on production`
                         );
                         test.skip();
                     });
