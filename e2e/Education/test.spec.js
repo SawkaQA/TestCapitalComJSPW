@@ -1,9 +1,11 @@
 const { test, expect } = require("@playwright/test");
 const { Header } = require("../../pages/header");
+const { LoginPage } = require("../../pages/login");
 
 test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
 
     let header;
+    let login;
     const languages = [
         {
             langName: "English",
@@ -17,7 +19,8 @@ test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
 
     test.beforeEach(async ({ page }) => {
         header = new Header(page);
-        await page.goto("/");
+        login = new LoginPage(page);
+        await login.visit();
         await page.locator("div .licLangSw__btn").hover();
     });
 
@@ -45,5 +48,13 @@ test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
                 }
             });
         });
-    });
-});
+
+        test(`Verify Login Form on Main page on ${language.langName}`, async ({ page }) => {
+            login = new LoginPage(page);
+            await page.locator(language.langUrl).click();
+            await login.clickBtnLogIn()
+            await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
+            await page.waitForTimeout(2000)
+        })
+    })
+})
