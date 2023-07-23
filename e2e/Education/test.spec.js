@@ -54,7 +54,6 @@ test.describe("US_11.03.05 | Educations > Menu item [Swing Trading]", () => {
             await page.locator(language.langUrl).click();
             await login.clickBtnLogIn()
             await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
-            await page.waitForTimeout(2000)
         })
     })
 })
