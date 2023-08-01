@@ -15,7 +15,7 @@ class LoginPage {
     async validLogin(email, password) {
       await this.userName.fill(email);
       await this.password.fill(password);
-      await this.continueButton.click();
+      await this.continueButton.click({force: true});
     }
 
     async clickBtnLogIn() {
