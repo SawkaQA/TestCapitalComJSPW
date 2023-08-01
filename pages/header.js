@@ -6,6 +6,7 @@ exports.Header = class Header {
         this.getMainLogo = page.locator('[class="cc-logo hideXs"]')
         this.getEducationMenu = page.locator(':nth-child(1) > .cc-nav__link--lvl1')
         this.PositionTrading = page.locator(`[class='grid gXs'] a[href="https://capital.com/position-trading"]`)
+        this.SharesTrading = page.locator('[class="grid gXs"] a[href="https://capital.com/trade-stocks"]')
         this.CountryAndLang = page.locator('div .licLangSw__btn')
         this.DropdownCountry = page.getByRole("textbox")
         this.AcceptAllCookies = page.locator('#onetrust-accept-btn-handler')
@@ -42,6 +43,10 @@ exports.Header = class Header {
 
     async clickPositionTrading() {
         await this.PositionTrading.click();
+    }
+
+    async clickSharesTrading() {
+        await this.SharesTrading.click();
     }
 
     async clickDropdownCountry() {
