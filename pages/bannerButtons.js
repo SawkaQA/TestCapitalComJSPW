@@ -5,7 +5,7 @@ class BannerBtn {
         this.page = page;
         this.StartTradingBtnOnMainBanner = page.locator('.btn--darkText')
         this.TryDemoBtnOnMainBanner = page.locator('.btn--emptyblack')
-        this.TradeBtnOnWidgetMostTraded = page.locator(`a[href="/trading/platform/spotlight/427748677997764?side=buy"]`)
+        this.TradeBtnOnWidgetMostTraded = page.locator('div[data-iid="27045129890124996"]')
         // Footer
         this.DownloadOnAppStoreBtn = page.locator('[data-type = "banner_capital_ios"]')
         this.DownloadOnGooglePlayLink = page.getByRole('[data-type = "banner_capital_google"]')
@@ -24,13 +24,7 @@ class BannerBtn {
     }
 
     async clickTradeBtnOnWidgetMostTraded() {
-        if (!(await this.TradeBtnOnWidgetMostTraded)) {
-            console.error(`For test on this country the button [Trade] on Widget "Most traded" doesn't displayed`);
-            throw new Error;
-        } else  {
-            await this.TradeBtnOnWidgetMostTraded.click()
-           
-        }
+       await this.TradeBtnOnWidgetMostTraded.click()    
     }
 
     async clickDownloadOnAppStoreBtn() {

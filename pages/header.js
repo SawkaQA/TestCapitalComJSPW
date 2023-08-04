@@ -4,9 +4,9 @@ exports.Header = class Header {
     constructor(page) {
         this.page = page;
         this.getMainLogo = page.locator('[class="cc-logo hideXs"]')
-        this.getEducationMenu = page.locator(':nth-child(1) > .cc-nav__link--lvl1')
-        this.PositionTrading = page.locator(`[class='grid gXs'] a[href="https://capital.com/position-trading"]`)
-        this.SharesTrading = page.locator('[class="grid gXs"] a[href="https://capital.com/trade-stocks"]')
+        this.getEducationMenu = page.locator('a[data-type="nav_id96"]')
+        this.PositionTrading = page.locator('a[data-type="nav_id528"]')
+        this.SharesTrading = page.locator('a[data-type="nav_id106"]')
         this.CountryAndLang = page.locator('div .licLangSw__btn')
         this.DropdownCountry = page.getByRole("textbox")
         this.AcceptAllCookies = page.locator('#onetrust-accept-btn-handler')

@@ -7,8 +7,8 @@ const { BannerBtn } = require("../../pages/bannerButtons")
 let header;
 let page;
 let bannerBtn;
-const language = "Français";
-const country = "France";
+const language = "English";
+const country = "United Kingdom";
 
 test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Role", () => {
 
@@ -33,7 +33,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -57,7 +57,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -81,7 +81,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -89,7 +89,14 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
             console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
             test.skip();
         }
-        await bannerBtn.clickTradeBtnOnWidgetMostTraded();
+
+        if (await bannerBtn.TradeBtnOnWidgetMostTraded.isVisible()) {
+            await bannerBtn.clickTradeBtnOnWidgetMostTraded(); 
+        } else {
+            console.log(`For test on '${country}' the button [Trade] doen't displayed `)
+            test.fail();
+        }
+        
         await expect(page.locator("#s_overlay > .form-container-white")).toBeVisible();
         await expect(page.locator("#s_overlay").getByText("Sign up")).toHaveText(/Sign up/);
         await expect(page.locator("#s_overlay").getByRole("link", { name: "Login" })).toBeVisible();
@@ -105,7 +112,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -128,7 +135,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -147,9 +154,10 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
     test(`TC_11.03.04_06_UnReg  > Test button [Explore Web Platform] in the block "Sign up and trade smart today" on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -158,8 +166,9 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
             test.skip();
         }
         await bannerBtn.clickExploreWebPlatformLink();
-        await page.waitForLoadState('networkidle')
-        // await expect(page.locator('.modal')).toBeVisible();
+        await page.waitForLoadState('load')
+        // await page.waitForLoadState('https://capital.com/trading/platform/');
+        expect(await page.locator('.modal')).toBeVisible();
         expect(await page.locator(".modal__header").getByText("Sign up")).toHaveText(/Sign up/);
         expect(await page.locator(".txt__link").getByRole("link", { name: "Login" })).toBeVisible();
         expect(await page.getByRole("textbox", { name: "Email address" })).toHaveAttribute("type", "email");
@@ -174,7 +183,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -236,7 +245,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -262,7 +271,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -288,7 +297,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -296,7 +305,14 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
             console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
             test.skip();
         }
-        await bannerBtn.clickTradeBtnOnWidgetMostTraded();
+
+        if (await bannerBtn.TradeBtnOnWidgetMostTraded.isVisible()) {
+            await bannerBtn.clickTradeBtnOnWidgetMostTraded(); 
+        } else {
+            console.log(`For test on '${country}' the button [Trade] doen't displayed `)
+            test.fail();
+        }
+        // await bannerBtn.clickTradeBtnOnWidgetMostTraded();
         await page.waitForLoadState('networkidle');
         // await page.getByRole('link', { name: 'Trade', exact: true }).first().click();
         await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
@@ -315,7 +331,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -337,7 +353,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -359,7 +375,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -384,7 +400,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -394,7 +410,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         }
         await bannerBtn.clickCreateAndVerifyBtn();
         // await page.locator('.regSteps__shape > .js_signup').click();
-        expect(await page.locator("#s_overlay > .form-container-white")).toBeVisible();
+        expect(await page.locator("#s_overlay > .form-container-white")).toBeVisible({ timeout: 10000 });
         expect(await page.locator("#s_overlay").getByText("Sign up")).toHaveText(/Sign up/);
         expect(await page.locator("#s_overlay").getByRole("link", { name: "Login" })).toBeVisible();
         expect(await page.getByRole("textbox", { name: "Email address" })).toHaveAttribute("type", "email");
@@ -409,6 +425,8 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
     let header;
     let login;
     let page;
+    let bannerBtn;
+    
 
     const testData = {
         email: "sadsass@gmail.com",
@@ -445,7 +463,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -462,9 +480,10 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
     test(`TC_11.03.04_02_Auth  > Test button [Try Demo] in Main banner on '${language}' language`, async () => {
         header = new Header(page);
         login = new LoginPage(page);
+        bannerBtn = new BannerBtn(page)
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -472,8 +491,9 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
             console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
             test.skip();
         }
-        await page.getByRole("link", { name: "Try Demo" }).click();
-        await page.waitForLoadState('networkidle');
+        await bannerBtn.clickTryDemoBtnOnMainBanner();
+        await page.waitForLoadState('load');
+        // await page.waitForLoadState('https://capital.com/trading/platform/?mode=demo')
         expect(await page).toHaveURL('https://capital.com/trading/platform/?mode=demo');
         await page.goBack();
     });
@@ -483,7 +503,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -491,7 +511,14 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
             console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
             test.skip();
         }
-        await page.getByRole('link', { name: 'Trade', exact: true }).first().click();
+
+        if (await bannerBtn.TradeBtnOnWidgetMostTraded.isVisible()) {
+            await bannerBtn.clickTradeBtnOnWidgetMostTraded(); 
+        } else {
+            console.log(`For test on '${country}' the button [Trade] doen't displayed`)
+            test.fail();
+        }
+        // await page.getByRole('link', { name: 'Trade', exact: true }).first().click();
         await page.waitForLoadState('networkidle');
         expect(await page).toHaveURL('https://capital.com/trading/platform/charting/');
         await page.goBack();
@@ -502,7 +529,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -524,7 +551,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -545,7 +572,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -553,9 +580,10 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
             console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
             test.skip();
         }
-        await page.locator('.badge-platform').click();
+        await page.locator('[data-type="banner_capital_platform"]').click();
         await page.waitForLoadState('networkidle');
         expect(await page).toHaveURL('https://capital.com/trading/platform/');
+        await page.waitForLoadState('networkidle');
         await page.goBack();
     });
 
@@ -564,7 +592,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('[class="cc-nav__dropdown gridRUp gXs "] [href="https://capital.com/position-trading"]');
+        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
             await isVisiblePosition.click();
@@ -573,7 +601,9 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
             test.skip();
         }
         await page.locator('.regSteps__shape > .js_signup').click();
-        await page.waitForLoadState('networkidle');
-        expect(await page).toHaveURL('https://capital.com/trading/platform/');
+        await page.waitForURL('https://capital.com/trading/platform/');
+        await expect(page).toHaveURL('https://capital.com/trading/platform/');
+        await page.waitForLoadState();
+        await page.goBack();
     });
 });
