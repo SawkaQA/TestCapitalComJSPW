@@ -3,7 +3,7 @@ const { test, expect } = require("@playwright/test");
 class BannerBtn {
     constructor(page) {
         this.page = page;
-        this.StartTradingBtnOnMainBanner = page.locator('.btn--darkText')
+        this.StartTradingBtnOnMainBanner = page.locator('a.btn--darkText[data-type="top_banner_btn"]')
         this.TryDemoBtnOnMainBanner = page.locator('.btn--emptyblack')
         this.TradeBtnOnWidgetMostTraded = page.locator('div[data-iid="27045129890124996"]')
         // Footer

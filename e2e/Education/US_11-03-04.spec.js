@@ -7,8 +7,8 @@ const { BannerBtn } = require("../../pages/bannerButtons")
 let header;
 let page;
 let bannerBtn;
-const language = "English";
-const country = "United Kingdom";
+const language = "Polski";
+const country = "Poland";
 
 test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Role", () => {
 
