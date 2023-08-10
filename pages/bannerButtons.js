@@ -9,7 +9,7 @@ class BannerBtn {
         // Footer
         this.DownloadOnAppStoreBtn = page.locator('[data-type = "banner_capital_ios"]')
         this.DownloadOnGooglePlayLink = page.getByRole('[data-type = "banner_capital_google"]')
-        this.ExploreWebPlatformLink = page.locator('signup-component.modal')
+        this.ExploreWebPlatformLink = page.locator('[data-type="banner_capital_platform"]')
         this.CreateAndVerifyBtn = page.locator('.regSteps__shape > .js_signup')
     }
 
