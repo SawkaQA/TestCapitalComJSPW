@@ -1,0 +1,1 @@
+For test on 'United Kingdom' the button [Trade] doen't displayed 
