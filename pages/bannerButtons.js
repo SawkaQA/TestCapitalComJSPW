@@ -8,7 +8,7 @@ class BannerBtn {
         this.TradeBtnOnWidgetMostTraded = page.locator('div[data-iid="27045129890124996"]')
         // Footer
         this.DownloadOnAppStoreBtn = page.locator('[data-type = "banner_capital_ios"]')
-        this.DownloadOnGooglePlayLink = page.getByRole('[data-type = "banner_capital_google"]')
+        this.DownloadOnGooglePlayLink = page.locator('[data-type = "banner_capital_google"]')
         this.ExploreWebPlatformLink = page.locator('[data-type="banner_capital_platform"]')
         this.CreateAndVerifyBtn = page.locator('.regSteps__shape > .js_signup')
     }
