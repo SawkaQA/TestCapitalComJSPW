@@ -167,6 +167,80 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
 
   });
 
+  test(`TC_11.02.02_03_UnReg  > Test button [Sell] in the Banner [Trading Instrument] on '${language}' language`, async () => {
+    bannerBtn = new BannerBtn(page);
+    const fs = require('fs');
+    if (await header.SharesTrading.isVisible()) {
+      await header.clickSharesTrading();
+    } else {
+      console.log(`For test on '${language}' language the page "Education->SharesTrading" doesn't exist on production`);
+      test.skip();
+    }
+    // await bannerBtn.clickSellBtnOnBanner();
+    // await expect(page.locator("div.form-container-columned")).toBeVisible();
+    // const elementText = await page.$eval('#s_overlay', element => element.innerText);
+    // expect(elementText).toBeTruthy();
+    // await expect(page.locator('[class="signup-form"] .h1')).toBeVisible();
+    // await expect(page.locator('#s_overlay-email > .field__control')).toHaveAttribute("type", "email");
+    // await expect(page.locator('#s_overlay-pass > .field__control')).toHaveAttribute("type", "password");
+    // await expect(page.locator('.signup-form > .form-container-small-content > form > .btn')).toBeVisible();
+    // await page.locator('#s_overlay .form-container-white .button-cleared').click();
+    // console.log(`Testing the first level on the page 'https://capital.com/ar/trade-stocks ' completed successfully `);
+    await page.waitForTimeout(20000);
+    /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
+    содержащий все значения атрибута href выбранных элементов <a> */
+    const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
+    if (links.length === 0) {
+      console.log("There are no links on this page and testing of the second level is impossible");
+    } else {
+      console.log("links", links);
+    }
+    // запись элементов массива "links" в файл "links.txt" с использованием метода "writeFileSync" из модуля "fs"
+    fs.writeFileSync('links.txt', links.join('\n'));
+    // Содержимое файла "links.txt" считывается с использованием метода "readFileSync" из модуля "fs" и сохраняется в переменную "fileContent"
+    const fileContent = fs.readFileSync('links.txt', 'utf-8');
+    const linksFromFile = fileContent.split('\n').filter((link) => link !== '');
+    const randomLinks = getRandomElements(linksFromFile, 4);
+    for (let i = 1; i < randomLinks.length; i++) {
+      await page.goto(randomLinks[i]);
+
+      if (await bannerBtn.SellBtnOnBanner.isVisible()) {
+        await bannerBtn.clickSellBtnOnBanner();
+      } else {
+        console.log(`For test on '${country}' country the page "Education->SharesTrading" doesn't exist on production`)
+        test.skip();
+      }
+
+      await expect(page.locator("#s_overlay > .form-container-white")).toBeVisible();
+      const elementText = await page.$eval('#s_overlay', element => element.innerText);
+      expect(elementText).toBeTruthy();
+      await expect(page.locator('[class="signup-form"] .h1')).toBeVisible();
+      await expect(page.locator('#s_overlay-email > .field__control')).toHaveAttribute("type", "email");
+      await expect(page.locator('#s_overlay-pass > .field__control')).toHaveAttribute("type", "password");
+      await expect(page.locator('.signup-form > .form-container-small-content > form > .btn')).toBeVisible();
+      await page.locator('#s_overlay .form-container-white .button-cleared').click();
+
+      if (randomLinks.includes(randomLinks[i])) {
+        console.log(`Testing on the '${randomLinks[i]}' link was successfully completed `);
+      } else {
+        console.log(`Testing on the '${randomLinks[i]}' link was failed`);
+      }
+
+    }
+
+    // Функция для получения случайных элементов из массива
+
+    function getRandomElements(array, count) {
+      const randomized = array.slice();
+      for (let i = randomized.length - 1; i > 1; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
+      }
+      return randomized.slice(0, count);
+    }
+
+  });
+
 })
 
 test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role", () => {
