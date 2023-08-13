@@ -497,7 +497,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         await page.getByRole("link", { name: language }).click();
     });
 
-    test.only(`TC_11.03.04_01_Auth  > Test button [Start Trading] in Main banner on '${language}' language`, async () => {
+    test(`TC_11.03.04_01_Auth  > Test button [Start Trading] in Main banner on '${language}' language`, async () => {
         header = new Header(page);
         login = new LoginPage(page);
         await header.getEducationMenu.hover();
@@ -516,7 +516,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         await page.goBack();
     });
 
-    test.only(`TC_11.03.04_02_Auth  > Test button [Try Demo] in Main banner on '${language}' language`, async () => {
+    test(`TC_11.03.04_02_Auth  > Test button [Try Demo] in Main banner on '${language}' language`, async () => {
         header = new Header(page);
         login = new LoginPage(page);
         bannerBtn = new BannerBtn(page)
