@@ -85,7 +85,6 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
 
     }
 
-
     // Функция для получения случайных элементов из массива
 
     function getRandomElements(array, count) {
@@ -444,7 +443,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     }
 
   });
-
+});
 
   test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role", () => {
     const testData = {
@@ -486,7 +485,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
       }
       await bannerBtn.clickStartTradingBtnOnMainBanner();
       await page.waitForTimeout(10000);
-      expect(await page).toHaveURL('https://capital.com/trading/platform/');
+      expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
       // expect(await page.locator('object.logo')).toBeVisible();
       await page.waitForTimeout(10000);
       await page.goBack();
@@ -512,7 +511,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
         await page.goto(randomLinks[i]);
         await bannerBtn.clickStartTradingBtnOnMainBanner();
         await page.waitForTimeout(10000);
-        expect(await page).toHaveURL('https://capital.com/trading/platform/');
+        expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
         // expect(await page.locator('object.logo')).toBeVisible();
         await page.waitForTimeout(10000);
         await page.goBack();
@@ -548,8 +547,9 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
         test.skip();
       }
       await bannerBtn.clickTryDemoBtnOnMainBanner();
-      await page.waitForLoadState('load');
-      await page.waitForLoadState('networkidle');
+      // await page.waitForLoadState('load');
+      // await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(10000);
       expect(await page).toHaveURL('https://capital.com/trading/platform/?mode=demo');
       // expect(await page.locator('object.logo')).toBeVisible();
       // expect(await page.locator('div.account__mode_demo')).toBeVisible();
@@ -576,8 +576,9 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
       for (let i = 1; i < randomLinks.length; i++) {
         await page.goto(randomLinks[i]);
         await bannerBtn.clickTryDemoBtnOnMainBanner();
-        await page.waitForLoadState('load');
-        await page.waitForLoadState('networkidle');
+        // await page.waitForLoadState('load');
+        // await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(10000);
         expect(await page).toHaveURL('https://capital.com/trading/platform/?mode=demo');
         // expect(await page.locator('object.logo')).toBeVisible();
         // expect(await page.locator('div.account__mode_demo')).toBeVisible();
@@ -605,8 +606,6 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
 
     });
   });
-
-})
 
 
 
