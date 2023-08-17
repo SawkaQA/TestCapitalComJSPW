@@ -7,6 +7,7 @@ class BannerBtn {
         this.TryDemoBtnOnMainBanner = page.locator('.btn--emptyblack')
         this.TradeBtnOnWidgetMostTraded = page.locator('div[data-iid="27045129890124996"]')
         this.SellBtnOnBanner = page.locator('a.button-main.sell')
+        this.BuyBtnOnBanner = page.locator('a.button-main.buy')
         // Footer
         this.DownloadOnAppStoreBtn = page.locator('[data-type = "banner_capital_ios"]')
         this.DownloadOnGooglePlayLink = page.locator('[data-type = "banner_capital_google"]')
@@ -46,6 +47,10 @@ class BannerBtn {
 
     async clickSellBtnOnBanner() {
         await this.SellBtnOnBanner.click();
+    }
+
+    async clickBuyBtnOnBanner() {
+        await this.BuyBtnOnBanner.click();
     }
 }
 module.exports = { BannerBtn };

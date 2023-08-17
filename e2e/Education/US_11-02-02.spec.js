@@ -7,11 +7,19 @@ let header;
 let page;
 let login;
 let bannerBtn;
-const language = "Español";
-const country = "Spain";
+const language = "Deutsch";
+const country = "Germany";
+function getRandomElements(array, count) {
+  const randomized = array.slice();
+  for (let i = randomized.length - 1; i > 1; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
+  }
+  return randomized.slice(0, count);
+}
 
 test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role", () => {
-
+ 
   test.beforeEach(async ({ browser }) => {
     const context = await browser.newContext();
     page = await context.newPage();
@@ -49,7 +57,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
     await expect(page.locator('#s_overlay-pass > .field__control')).toHaveAttribute("type", "password");
     await expect(page.locator('.signup-form > .form-container-small-content > form > .btn')).toBeVisible();
     await page.locator('#s_overlay .form-container-white .button-cleared').click();
-    console.log(`Testing the first level on the page 'https://capital.com/ar/trade-stocks ' completed successfully `);
+    console.log(`Testing the first level on the main page is completed successfully `);
     await page.waitForTimeout(20000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -83,15 +91,6 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
         console.log(`Testing on the '${randomLinks[i]}' link was failed`);
       }
     }
-    // Функция для получения случайных элементов из массива
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
-      }
-      return randomized.slice(0, count);
-    }
 
   });
 
@@ -107,7 +106,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
     await expect(page.locator('#s_overlay-pass > .field__control')).toHaveAttribute("type", "password");
     await expect(page.locator('.signup-form > .form-container-small-content > form > .btn')).toBeVisible();
     await page.locator('#s_overlay .form-container-white .button-cleared').click();
-    console.log(`Testing the first level on the page 'https://capital.com/ar/trade-stocks ' completed successfully `);
+    console.log(`Testing the first level on the main page is completed successfully `);
     await page.waitForTimeout(20000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -140,15 +139,6 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
       } else {
         console.log(`Testing on the '${randomLinks[i]}' link was failed`);
       }
-    }
-    // Функция для получения случайных элементов из массива
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
-      }
-      return randomized.slice(0, count);
     }
 
   });
@@ -196,16 +186,51 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
         console.log(`Testing on the '${randomLinks[i]}' link was failed`);
       }
     }
-    // Функция для получения случайных элементов из массива
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
-      }
-      return randomized.slice(0, count);
-    }
+  });
 
+  test.only(`TC_11.02.02_04_UnReg  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
+    bannerBtn = new BannerBtn(page);
+    const fs = require('fs');
+    await page.waitForTimeout(15000);
+    /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
+    содержащий все значения атрибута href выбранных элементов <a> */
+    const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
+    if (links.length === 0) {
+      console.log("There are no links on this page and testing of the second level is impossible");
+    } else {
+      console.log("links", links);
+    }
+    // запись элементов массива "links" в файл "links.txt" с использованием метода "writeFileSync" из модуля "fs"
+    fs.writeFileSync('links.txt', links.join('\n'));
+    // Содержимое файла "links.txt" считывается с использованием метода "readFileSync" из модуля "fs" и сохраняется в переменную "fileContent"
+    const fileContent = fs.readFileSync('links.txt', 'utf-8');
+    const linksFromFile = fileContent.split('\n').filter((link) => link !== '');
+    const randomLinks = getRandomElements(linksFromFile, 4);
+    for (let i = 0; i < randomLinks.length; i++) {
+      await page.goto(randomLinks[i]);
+
+      if (await bannerBtn.SellBtnOnBanner.isVisible()) {
+        await bannerBtn.clickBuyBtnOnBanner();
+      } else {
+        console.log(`For test on '${randomLinks[i]}' link the button [Buy] doen't displayed`)
+        continue;
+      }
+      await page.waitForLoadState('networkidle');
+      await expect(page.locator("#s_overlay > .form-container-white")).toBeVisible();
+      const elementText = await page.$eval('#s_overlay', element => element.innerText);
+      expect(elementText).toBeTruthy();
+      await expect(page.locator('[class="signup-form"] .h1')).toBeVisible();
+      await expect(page.locator('#s_overlay-email > .field__control')).toHaveAttribute("type", "email");
+      await expect(page.locator('#s_overlay-pass > .field__control')).toHaveAttribute("type", "password");
+      await expect(page.locator('.signup-form > .form-container-small-content > form > .btn')).toBeVisible();
+      await page.locator('#s_overlay .form-container-white .button-cleared').click();
+
+      if (randomLinks.includes(randomLinks[i])) {
+        console.log(`Testing on the '${randomLinks[i]}' link was successfully completed `);
+      } else {
+        console.log(`Testing on the '${randomLinks[i]}' link was failed`);
+      }
+    }
   });
 
 })
@@ -215,6 +240,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     email: "sadsass@gmail.com",
     password: "123Qwert!@dsdDs",
   }
+ 
   test.beforeEach(async ({ browser }) => {
     const context = await browser.newContext();
     page = await context.newPage();
@@ -257,7 +283,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
       await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
     } catch (error) {
       console.log("Opened a 'Sign up' form instead of a 'Login' form");
-      throw new Error("Test failed");
+      throw new Error();
     }
     const elementText = await page.$eval('#l_overlay', element => element.innerText);
     expect(elementText).toBeTruthy();
@@ -269,7 +295,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     await expect(page.locator(".form-container-white > .form-container-small-content > form > .btn")).toBeVisible();
     await expect(page.locator(".form-container-white > .form-container-small-header > p > .l_btn_signup")).toBeVisible();
     await page.locator("#l_overlay .form-container-white .button-cleared").click();
-    console.log(`Testing the first level on the page 'https://capital.com/ar/trade-stocks ' completed successfully `)
+    console.log(`Testing the first level on the  main page is completed successfully `)
     await page.waitForTimeout(20000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -312,18 +338,6 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
       } else {
         console.log(`Testing on the '${randomLinks[i]}' link was failed`);
       }
-
-    }
-
-    // Функция для получения случайных элементов из массива
-
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
-      }
-      return randomized.slice(0, count);
     }
 
   });
@@ -336,7 +350,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
       await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
     } catch (error) {
       console.log("Opened a 'Sign up' form instead of a 'Login' form");
-      throw new Error("Test failed");
+      throw new Error();
     }
     const elementText = await page.$eval('#l_overlay', element => element.innerText);
     expect(elementText).toBeTruthy();
@@ -348,7 +362,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     await expect(page.locator(".form-container-white > .form-container-small-content > form > .btn")).toBeVisible();
     await expect(page.locator(".form-container-white > .form-container-small-header > p > .l_btn_signup")).toBeVisible();
     await page.locator("#l_overlay .form-container-white .button-cleared").click();
-    console.log(`Testing the first level on the page 'https://capital.com/ar/trade-stocks ' completed successfully `)
+    console.log(`Testing the first level on the main page is completed successfully `)
     await page.waitForTimeout(20000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -391,16 +405,6 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
       } else {
         console.log(`Testing on the '${randomLinks[i]}' link was failed`);
       }
-
-    }
-    // Функция для получения случайных элементов из массива
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
-      }
-      return randomized.slice(0, count);
     }
 
   });
@@ -437,7 +441,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
         await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
       } catch (error) {
         console.log("Opened a 'Sign up' form instead of a 'Login' form");
-        throw new Error("Test failed");
+        throw new Error();
       }
       const elementText = await page.$eval('#l_overlay', element => element.innerText);
       expect(elementText).toBeTruthy();
@@ -457,14 +461,60 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
         continue;
       }
     }
-    // Функция для получения случайных элементов из массива
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
+
+  });
+
+  test.only(`TC_11.02.02_04_UnAuth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
+    bannerBtn = new BannerBtn(page);
+    const fs = require('fs');
+    await page.waitForTimeout(15000);
+    /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
+    содержащий все значения атрибута href выбранных элементов <a> */
+    const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
+    if (links.length === 0) {
+      console.log("There are no links on this page and testing of the second level is impossible");
+    } else {
+      console.log("links", links);
+    }
+    // запись элементов массива "links" в файл "links.txt" с использованием метода "writeFileSync" из модуля "fs"
+    fs.writeFileSync('links.txt', links.join('\n'));
+    // Содержимое файла "links.txt" считывается с использованием метода "readFileSync" из модуля "fs" и сохраняется в переменную "fileContent"
+    const fileContent = fs.readFileSync('links.txt', 'utf-8');
+    const linksFromFile = fileContent.split('\n').filter((link) => link !== '');
+    const randomLinks = getRandomElements(linksFromFile, 4);
+    for (let i = 0; i < randomLinks.length; i++) {
+      await page.goto(randomLinks[i]);
+
+      if (await bannerBtn.BuyBtnOnBanner.isVisible()) {
+        await bannerBtn.clickBuyBtnOnBanner();
+      } else {
+        console.log(`For test on '${randomLinks[i]}' link the button [Buy] doen't displayed`)
+        continue;
       }
-      return randomized.slice(0, count);
+      await page.waitForLoadState('networkidle');
+      try {
+        await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
+      } catch (error) {
+        console.log("Opened a 'Sign up' form instead of a 'Login' form");
+        throw new Error();
+      }
+      const elementText = await page.$eval('#l_overlay', element => element.innerText);
+      expect(elementText).toBeTruthy();
+      await expect(page.locator("[class='form-container-small-header'] > .h1")).toBeVisible();
+      await expect(page.locator("#l_f_email > .field__control")).toHaveAttribute("type", "email");
+      await expect(page.locator("#l_f_pass > .field__control")).toHaveAttribute("type", "password");
+      expect(await page.getByLabel("input[name=l_rem]").isChecked());
+      await expect(page.locator('[class="l_btn_forgot"]')).toBeVisible();
+      await expect(page.locator(".form-container-white > .form-container-small-content > form > .btn")).toBeVisible();
+      await expect(page.locator(".form-container-white > .form-container-small-header > p > .l_btn_signup")).toBeVisible();
+      await page.locator("#l_overlay .form-container-white .button-cleared").click();
+
+      if (randomLinks.includes(randomLinks[i])) {
+        console.log(`Testing on the '${randomLinks[i]}' link was successfully completed `);
+      } else {
+        console.log(`Testing on the '${randomLinks[i]}' link was failed`);
+        continue;
+      }
     }
 
   });
@@ -475,6 +525,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
     email: "sadsass@gmail.com",
     password: "123Qwert!@dsdDs",
   }
+ 
   test.beforeEach(async ({ browser }) => {
     const context = await browser.newContext();
     page = await context.newPage();
@@ -510,14 +561,15 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
     await bannerBtn.clickStartTradingBtnOnMainBanner();
-    await page.waitForTimeout(10000);
+    await page.waitForLoadState('networkidle');
     expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
     // expect(await page.locator('object.logo')).toBeVisible();
-    await page.waitForTimeout(10000);
+    // expect(await page.locator('div.account__mode_demo')).toBeVisible();
+    await page.waitForTimeout(5000);
     await page.goBack();
-
-    console.log(`Testing the first level on the page 'https://capital.com/ar/trade-stocks ' completed successfully `)
-    await page.waitForTimeout(20000);
+    console.log(`Testing the first level on the main page is completed successfully `)
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(15000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
     const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
@@ -536,10 +588,11 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
     for (let i = 1; i < randomLinks.length; i++) {
       await page.goto(randomLinks[i]);
       await bannerBtn.clickStartTradingBtnOnMainBanner();
-      await page.waitForTimeout(10000);
+      await page.waitForLoadState('networkidle');
       expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
       // expect(await page.locator('object.logo')).toBeVisible();
-      await page.waitForTimeout(10000);
+      // expect(await page.locator('div.account__mode_demo')).toBeVisible();
+      await page.waitForTimeout(5000);
       await page.goBack();
 
       if (randomLinks.includes(randomLinks[i])) {
@@ -550,17 +603,6 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
 
     }
 
-    // Функция для получения случайных элементов из массива
-
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
-      }
-      return randomized.slice(0, count);
-    }
-
   });
 
   test(`TC_11.02.02_02_Auth  > Test button [Try Demo] in Main banner on '${language}' language`, async () => {
@@ -569,15 +611,14 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
     await bannerBtn.clickTryDemoBtnOnMainBanner();
     // await page.waitForLoadState('load');
     // await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(5000);
     expect(await page).toHaveURL('https://capital.com/trading/platform/?mode=demo');
     // expect(await page.locator('object.logo')).toBeVisible();
     // expect(await page.locator('div.account__mode_demo')).toBeVisible();
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(5000);
     await page.goBack();
-
-    console.log(`Testing the first level on the page 'https://capital.com/ar/trade-stocks ' completed successfully `)
-    await page.waitForTimeout(20000);
+    console.log(`Testing the first level on the main page is completed successfully `)
+    await page.waitForTimeout(15000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
     const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
@@ -598,11 +639,11 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
       await bannerBtn.clickTryDemoBtnOnMainBanner();
       // await page.waitForLoadState('load');
       // await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(5000);
       expect(await page).toHaveURL('https://capital.com/trading/platform/?mode=demo');
       // expect(await page.locator('object.logo')).toBeVisible();
       // expect(await page.locator('div.account__mode_demo')).toBeVisible();
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(5000);
       await page.goBack();
 
       if (randomLinks.includes(randomLinks[i])) {
@@ -613,16 +654,6 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
 
     }
 
-    // Функция для получения случайных элементов из массива
-
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
-      }
-      return randomized.slice(0, count);
-    }
   });
 
   test(`TC_11.02.02_03_Auth  > Test button [Sell] in the Banner [Trading Instrument] on '${language}' language`, async () => {
@@ -657,7 +688,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
       expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
       // expect(await page.locator('object.logo')).toBeVisible();
       // expect(await page.locator('div.account__mode_demo')).toBeVisible();
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(5000);
       await page.goBack();
       if (randomLinks.includes(randomLinks[i])) {
         console.log(`Testing on the '${randomLinks[i]}' link was successfully completed `);
@@ -666,14 +697,49 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
         continue;
       }
     }
-    // Функция для получения случайных элементов из массива
-    function getRandomElements(array, count) {
-      const randomized = array.slice();
-      for (let i = randomized.length - 1; i > 1; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [randomized[i], randomized[j]] = [randomized[j], randomized[i]];
+
+  });
+
+  test.only(`TC_11.02.02_04_Auth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
+    bannerBtn = new BannerBtn(page);
+    const fs = require('fs');
+    await page.waitForTimeout(15000);
+    /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
+    содержащий все значения атрибута href выбранных элементов <a> */
+    const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
+    if (links.length === 0) {
+      console.log("There are no links on this page and testing of the second level is impossible");
+    } else {
+      console.log("links", links);
+    }
+    // запись элементов массива "links" в файл "links.txt" с использованием метода "writeFileSync" из модуля "fs"
+    fs.writeFileSync('links.txt', links.join('\n'));
+    // Содержимое файла "links.txt" считывается с использованием метода "readFileSync" из модуля "fs" и сохраняется в переменную "fileContent"
+    const fileContent = fs.readFileSync('links.txt', 'utf-8');
+    const linksFromFile = fileContent.split('\n').filter((link) => link !== '');
+    const randomLinks = getRandomElements(linksFromFile, 4);
+    for (let i = 0; i < randomLinks.length; i++) {
+      await page.goto(randomLinks[i]);
+
+      if (await bannerBtn.BuyBtnOnBanner.isVisible()) {
+        await bannerBtn.clickBuyBtnOnBanner();
+      } else {
+        console.log(`For test on '${randomLinks[i]}' link the button [Buy] doen't displayed`)
+        continue;
       }
-      return randomized.slice(0, count);
+      await page.waitForLoadState('networkidle');
+      // await page.waitForTimeout(10000);
+      expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
+      // expect(await page.locator('object.logo')).toBeVisible();
+      // expect(await page.locator('div.account__mode_demo')).toBeVisible();
+      await page.waitForTimeout(5000);
+      await page.goBack();
+      if (randomLinks.includes(randomLinks[i])) {
+        console.log(`Testing on the '${randomLinks[i]}' link was successfully completed `);
+      } else {
+        console.log(`Testing on the '${randomLinks[i]}' link was failed`);
+        continue;
+      }
     }
 
   });
