@@ -1,14 +1,21 @@
 const { test, expect } = require("@playwright/test");
 const { Header } = require("../../pages/header");
 const { LoginPage } = require("../../pages/login");
-// const { SignUpPage } = require("../../pages/signup");
+const { SignUpPage } = require("../../pages/signup");
 const { BannerBtn } = require("../../pages/bannerButtons")
 
 let header;
 let page;
 let bannerBtn;
-const language = "Deutsch"
-const country = "Germany";
+let signup;
+
+const testData = {
+    email: "alexviktoria1609@gmail.com",
+    password: "Av-123456789",
+}
+
+const language = "Nederlands"
+const country = "Netherlands";
 
 test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Role", () => {
 
@@ -22,235 +29,167 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
         await header.clickAcceptAllCookies();
         // select country and language
         await header.hoverCountryAndLang();
-        await page.getByRole("textbox").first().click();
-        await page.getByRole("link", { name: country }).click();
-        await header.hoverCountryAndLang()
-        await page.getByRole("link", { name: language }).click();
+        await header.clickDropdownCountry();
+        await header.clickGetCountry();
+        await header.hoverCountryAndLang();
+        await header.clickGetLanguage();
     });
 
     test(`TC_11.03.04_01_UnReg  > Test button [Start Trading] in Main banner on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        signup = new SignUpPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
+        await header.clickPositionTrading()
         await bannerBtn.clickStartTradingBtnOnMainBanner();
-        await expect(page.locator("#s_overlay > .form-container-white")).toBeVisible();
-        await expect(page.locator("#s_overlay").getByText("Sign up")).toHaveText(/Sign up/);
-        await expect(page.locator("#s_overlay").getByRole("link", { name: "Login" })).toBeVisible();
-        await expect(page.getByRole("textbox", { name: "Email address" })).toHaveAttribute("type", "email");
-        await expect(page.getByRole("textbox", { name: "Password" })).toHaveAttribute("type", "password");
-        await expect(page.getByRole("button", { name: "Continue" })).toHaveText(/Continue/);
-        await expect(page.locator("#s_overlay").getByRole("link", { name: "Privacy Policy" })).toBeVisible();
-        await page.getByRole("button", { name: "Cancel" }).click();
+        expect(await signup.FormSignUp).toBeVisible();
+        expect(await signup.LoginLinkForm).toBeVisible();
+        expect(await signup.UserName).toHaveAttribute("type", "email");
+        expect(await signup.Password).toHaveAttribute("type", "password");
+        expect(await signup.ContinueButton).toBeVisible();
+        expect(await signup.TextContinueButton()).toMatch(/Continue/)
+        expect(await signup.PolicyLink).toBeVisible();
+        await signup.clickCloseSignUpFormBtn();
     });
 
     test(`TC_11.03.04_02_UnReg  > Test button [Try Demo] in Main banner on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        signup = new SignUpPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
+        await header.clickPositionTrading()
         await bannerBtn.clickTryDemoBtnOnMainBanner()
-        await expect(page.locator("#s_overlay > .form-container-white")).toBeVisible();
-        await expect(page.locator("#s_overlay").getByText("Sign up")).toHaveText(/Sign up/);
-        await expect(page.locator("#s_overlay").getByRole("link", { name: "Login" })).toBeVisible();
-        await expect(page.getByRole("textbox", { name: "Email address" })).toHaveAttribute("type", "email");
-        await expect(page.getByRole("textbox", { name: "Password" })).toHaveAttribute("type", "password");
-        await expect(page.getByRole("button", { name: "Continue" })).toHaveText(/Continue/);
-        await expect(page.locator("#s_overlay").getByRole("link", { name: "Privacy Policy" })).toBeVisible();
-        await page.getByRole("button", { name: "Cancel" }).click();
+        expect(await signup.FormSignUp).toBeVisible();
+        expect(await signup.LoginLinkForm).toBeVisible();
+        expect(await signup.UserName).toHaveAttribute("type", "email");
+        expect(await signup.Password).toHaveAttribute("type", "password");
+        expect(await signup.ContinueButton).toBeVisible();
+        expect(await signup.TextContinueButton()).toMatch(/Continue/)
+        expect(await signup.PolicyLink).toBeVisible();
+        await signup.clickCloseSignUpFormBtn();
     });
 
     test(`TC_11.03.04_03_UnReg  > Test buttons [Trade] on Widget "Most traded" on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        signup = new SignUpPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
-
+        await header.clickPositionTrading()
         await page.waitForLoadState('networkidle');
-        try {
-            await bannerBtn.TradeBtnOnWidgetMostTraded.isVisible();
-            await bannerBtn.clickTradeBtnOnWidgetMostTraded();
-        } catch (error) {
-            console.log(`For test on '${country}' the button [Trade] doen't displayed `)
-            throw new Error("Test failed");
-        }
-        await page.waitForTimeout(10000);
-        await expect(page.locator("#s_overlay > .form-container-white")).toBeVisible();
-        await expect(page.locator("#s_overlay").getByText("Sign up")).toHaveText(/Sign up/);
-        await expect(page.locator("#s_overlay").getByRole("link", { name: "Login" })).toBeVisible();
-        await expect(page.getByRole("textbox", { name: "Email address" })).toHaveAttribute("type", "email");
-        await expect(page.getByRole("textbox", { name: "Password" })).toHaveAttribute("type", "password");
-        await expect(page.getByRole("button", { name: "Continue" })).toHaveText(/Continue/);
-        await expect(page.locator("#s_overlay").getByRole("link", { name: "Privacy Policy" })).toBeVisible();
-        await page.getByRole("button", { name: "Cancel" }).click();
+        await bannerBtn.clickTradeBtnOnWidgetMostTraded();
+        // await page.waitForTimeout(3000);
+        expect(await signup.FormSignUp).toBeVisible();
+        expect(await signup.LoginLinkForm).toBeVisible();
+        expect(await signup.UserName).toHaveAttribute("type", "email");
+        expect(await signup.Password).toHaveAttribute("type", "password");
+        expect(await signup.ContinueButton).toBeVisible();
+        expect(await signup.TextContinueButton()).toMatch(/Continue/)
+        expect(await signup.PolicyLink).toBeVisible();
+        await signup.clickCloseSignUpFormBtn();
     });
 
     test(`TC_11.03.04_04_UnReg  > Test button [Download on the App Store] in the block "Sign up and trade smart today"  on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        signup = new SignUpPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
+        await header.clickPositionTrading()
         await bannerBtn.clickDownloadOnAppStoreBtn();
         // await page.waitForLoadState('networkidle');
         await page.waitForLoadState('load')
-        expect(await page.getByRole('link', { name: 'App Store' })).toBeVisible();
-        expect(await page.locator('picture#ember3')).toBeVisible();
-        expect(await page.getByRole('heading', { name: 'Capital.com: Trading & Finance 17+' })).toBeVisible();
-        expect(await page.getByRole('heading', { name: 'Capital Com SV Investments Limited' })).toBeVisible();
-        await page.goto('https://capital.com/position-trading');
+        expect(await bannerBtn.LogoAppStore).toBeVisible();
+        expect(await bannerBtn.IconCapital).toBeVisible();
+        expect(await bannerBtn.ProductNameOnAppstore).toBeVisible();
+        expect(await bannerBtn.LinkCapitalComOnAppstore).toBeVisible();
+        await page.goBack();
     })
 
     test(`TC_11.03.04_05_UnReg  > Test button [Get it on Google Play] in the block "Sign up and trade smart today" on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        signup = new SignUpPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        // await page.waitForLoadState('load')
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
-
+        await header.clickPositionTrading()
         await bannerBtn.clickDownloadOnGooglePlayLink();
-        await page.waitForTimeout(10000);
-        try {
-            await expect(page.locator('a.f0UV3d')).toBeVisible();
-            await expect(page.locator('h1.Fd93Bb.F5UCq.p5VxAd')).toHaveText(/Online Broker - Capital.com/);
-            await expect(page.locator('div.Vbfug.auoIOc')).toBeVisible();
-            await page.goto('https://capital.com/position-trading');
-        } catch (error) {
-            console.log(`The link to App Store instead of Google Play`)
-            throw new Error("Test failed");
-        }
+        await page.waitForLoadState('load')
+        expect(await bannerBtn.LogoGooglePlay).toBeVisible();
+        expect(await bannerBtn.ProdactNameOnGoogleplay).toHaveText(/Online Broker - Capital.com/);
+        expect(await bannerBtn.LinkCapitalComOnGoogleplay).toBeVisible();
+        await page.waitForTimeout(3000);
+        await page.goBack();
 
     })
 
     test(`TC_11.03.04_06_UnReg  > Test button [Explore Web Platform] in the block "Sign up and trade smart today" on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
-
+        signup = new SignUpPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        // await page.waitForLoadState('load')
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
-
+        await header.clickPositionTrading()
         await bannerBtn.clickExploreWebPlatformLink();
-        await page.waitForLoadState('load');
-        // await page.waitForLoadState('networkidle');
-        await page.waitForSelector('signup-component.modal2');
-        expect(await page.locator('signup-component.modal2')).toBeVisible();
-        expect(await page.locator(".modal__header").getByText("Sign up")).toHaveText(/Sign up/);
-        expect(await page.locator("span.txt__link")).toBeVisible();
-        expect(await page.locator(":nth-child(4) > .form-control")).toHaveAttribute("type", "email");
-        expect(await page.getByRole("textbox", { name: "Password" })).toHaveAttribute("type", "password");
-        expect(await page.getByRole("button", { name: "Continue" })).toHaveText(/Continue/);
-        expect(await page.locator(".checkbox__link")).toBeVisible();
+        // await page.waitForLoadState('load');
+        await page.waitForLoadState('networkidle');
+        // await page.waitForNavigation()
+        expect(await signup.FormSignUpOnPaltform).toBeVisible();
+        expect(await signup.LoginLinkFormOnPlatform).toBeVisible();
+        expect(await signup.EmailOnPlatform).toHaveAttribute("type", "email");
+        expect(await signup.PasswordOnPlatform).toHaveAttribute("type", "password");
+        expect(await signup.ContinueButton).toBeVisible();
+        expect(await signup.ContinueButtonOnPlatform).toHaveText(/Continue/);
+        expect(await signup.CloseSignUpFormOnPlatform).toBeVisible();
+        await page.waitForLoadState('networkidle');
         await page.goBack();
     });
 
     test(`TC_11.03.04_07_UnReg  > Test button [Create & verify your account] in the block "Still looking for a broker you can trust?" on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        signup = new SignUpPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
+        await header.clickPositionTrading()
         await bannerBtn.clickCreateAndVerifyBtn();
         await page.waitForLoadState('networkidle');
         // await page.waitForTimeout(5000);
-        expect(await page.locator("#s_overlay > .form-container-white")).toBeVisible();
-        expect(await page.locator("#s_overlay").getByText("Sign up")).toHaveText(/Sign up/);
-        expect(await page.locator("#s_overlay").getByRole("link", { name: "Login" })).toBeVisible();
-        expect(await page.getByRole("textbox", { name: "Email address" })).toHaveAttribute("type", "email");
-        expect(await page.getByRole("textbox", { name: "Password" })).toHaveAttribute("type", "password");
-        expect(await page.getByRole("button", { name: "Continue" })).toHaveText(/Continue/);
-        expect(await page.locator("#s_overlay").getByRole("link", { name: "Privacy Policy" })).toBeVisible();
-        await page.getByRole("button", { name: "Cancel" }).click();
+        expect(await signup.FormSignUp).toBeVisible();
+        expect(await signup.LoginLinkForm).toBeVisible();
+        expect(await signup.UserName).toHaveAttribute("type", "email");
+        expect(await signup.Password).toHaveAttribute("type", "password");
+        expect(await signup.ContinueButton).toBeVisible();
+        expect(await signup.TextContinueButton()).toMatch(/Continue/)
+        expect(await signup.PolicyLink).toBeVisible();
+        await signup.clickCloseSignUpFormBtn();
     });
 });
 
 test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Role", () => {
-    let header;
-    let login;
-    let page;
-    const testData = {
-        email: "sadsass@gmail.com",
-        password: "123Qwert!@dsdDs",
-    }
+    
     test.beforeAll(async ({ browser }) => {
-        const context = await browser.newContext({
-            testData: '../../fixtures/testData.json'
-        });
+        const context = await browser.newContext();
         page = await context.newPage();
         header = new Header(page);
         login = new LoginPage(page);
         // open capital.com
         await page.goto("/");
-        // user unauthorization
-        await login.clickBtnLogIn();
-        await login.validLogin(testData.email, testData.password);
-        await login.continueButton.waitFor();
-        await login.continueButton.click();
-        await page.waitForLoadState('networkidle');
-        await page.goBack();
-        await page.waitForLoadState('networkidle');
-        await page.locator('#wg_userarea').click();
-        await page.locator('.logout-user').click();
+         // user unauthorization
+         await login.loginAndContinue(testData.email, testData.password);
+         await page.waitForLoadState('networkidle');
+         await page.goBack();
+         await page.waitForLoadState('networkidle');
+         await login.logoutUser();
         // select country and language
         await header.hoverCountryAndLang();
-        await page.getByRole("textbox").first().click();
-        await page.getByRole("link", { name: country }).click();
-        await header.hoverCountryAndLang()
-        await page.getByRole("link", { name: language }).click();
+        await header.clickDropdownCountry();
+        await header.clickGetCountry();
+        await header.hoverCountryAndLang();
+        await header.clickGetLanguage();
+
     });
 
     test(`TC_11.03.04_01_UnAuth  > Test button [Start Trading] in Main banner on '${language}' language`, async () => {
@@ -258,20 +197,15 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         header = new Header(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
+        await header.clickPositionTrading()
 
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
+
         await bannerBtn.clickStartTradingBtnOnMainBanner();
         try {
             await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
         } catch (error) {
             console.log("Opened a 'Sign up' form instead of a 'Login' form");
-            throw new Error("Test failed");
+            throw new Error();
         }
         const elementText = await page.$eval('#l_overlay', element => element.innerText);
         expect(elementText).toBeTruthy();
@@ -303,7 +237,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
             await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
         } catch (error) {
             console.log("Opened a 'Sign up' form instead of a 'Login' form");
-            throw new Error("Test failed");
+            throw new Error();
         }
         const elementText = await page.$eval('#l_overlay', element => element.innerText);
         expect(elementText).toBeTruthy();
@@ -336,14 +270,14 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
             await bannerBtn.clickTradeBtnOnWidgetMostTraded();
         } catch (error) {
             console.log(`For test on '${country}' the button [Trade] doen't displayed `)
-            throw new Error("Test failed");
+            throw new Error();
         }
         await page.waitForTimeout(20000);
         try {
             await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
         } catch (error) {
             console.log("Opened a 'Sign up' form instead of a 'Login' form");
-            throw new Error("Test failed");
+            throw new Error();
         }
         const elementText = await page.$eval('#l_overlay', element => element.innerText);
         expect(elementText).toBeTruthy();
@@ -376,7 +310,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         await expect(page.locator('picture#ember3')).toBeVisible();
         await expect(page.getByRole('heading', { name: 'Capital.com: Trading & Finance 17+' })).toBeVisible();
         await expect(page.getByRole('heading', { name: 'Capital Com SV Investments Limited' })).toBeVisible();
-        await page.goto('https://capital.com/position-trading');
+        await page.goBack();
     });
 
     test(`TC_11.03.04_05_UnAuth  > Test button [Get it on Google Play] in the block "Sign up and trade smart today" on '${language}' language`, async () => {
@@ -399,10 +333,10 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
             await expect(page.locator('a.f0UV3d')).toBeVisible();
             await expect(page.locator('h1.Fd93Bb.F5UCq.p5VxAd')).toHaveText(/Online Broker - Capital.com/);
             await expect(page.locator('div.Vbfug.auoIOc')).toBeVisible();
-            await page.goto('https://capital.com/position-trading');
+            await page.goBack();
         } catch (error) {
             console.log(`The link to App Store instead of Google Play`)
-            throw new Error("Test failed");
+            throw new Error();
         }
 
     });
@@ -426,7 +360,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
             await expect(page.locator("cdk-dialog-container#login")).toBeVisible();
         } catch (error) {
             console.log("Opened a 'Sign up' form instead of a 'Login' form");
-            throw new Error("Test failed");
+            throw new Error();
         }
         expect(await page.locator('cdk-dialog-container#login')).toBeVisible();
         expect(await page.locator(".modal__header-title").getByText("Login")).toHaveText(/Login/);
@@ -469,8 +403,8 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
     let page;
     let bannerBtn;
     const testData = {
-        email: "sadsass@gmail.com",
-        password: "123Qwert!@dsdDs",
+        email: "alexviktoria1609@gmail.com",
+        password: "Av-123456789",
     }
     test.beforeAll(async ({ browser }) => {
         const context = await browser.newContext({
@@ -531,10 +465,10 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
             test.skip();
         }
         await bannerBtn.clickTryDemoBtnOnMainBanner();
-        await page.waitForTimeout(20000);
+        await page.waitForTimeout(3000);
         expect(await page).toHaveURL('https://capital.com/trading/platform/?mode=demo');
         // expect(await page.locator('object.logo')).toBeVisible();
-        await page.waitForTimeout(10000);
+        await page.waitForTimeout(3000);
         await page.goBack();
     });
 
@@ -557,7 +491,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
             await bannerBtn.clickTradeBtnOnWidgetMostTraded();
         } catch (error) {
             console.log(`For test on '${country}' the button [Trade] doen't displayed `)
-            throw new Error("Test failed");
+            throw new Error();
         }
         await page.waitForTimeout(10000);
         expect(await page).toHaveURL('https://capital.com/trading/platform/charting/');
@@ -608,7 +542,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
             await page.goto('https://capital.com/position-trading');
         } catch (error) {
             console.log(`The link to App Store instead of Google Play`)
-            throw new Error("Test failed");
+            throw new Error();
         }
     });
 
@@ -628,9 +562,9 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         await page.locator('[data-type="banner_capital_platform"]').click();
         // await page.waitForLoadState('load');
         // await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(20000);
+        await page.waitForTimeout(3000);
         expect(await page).toHaveURL('https://capital.com/trading/platform/');
-        await page.waitForTimeout(10000);
+        await page.waitForTimeout(3000);
         // expect(await page.locator('object.logo')).toBeVisible();
         await page.goBack();
     });
@@ -638,8 +572,9 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
     test(`TC_11.03.04_07_Auth  > Test button [Create & verify your account] in the block "Still looking for a broker you can trust?" on '${language}' language`, async () => {
         header = new Header(page);
         login = new LoginPage(page);
+        bannerBtn = new BannerBtn(page)
         await header.getEducationMenu.hover();
-        await page.waitForTimeout(10000);
+        await page.waitForTimeout(5000);
         const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
 
         if (await isVisiblePosition.isVisible()) {
@@ -651,11 +586,11 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         await bannerBtn.clickCreateAndVerifyBtn();
         // await page.waitForLoadState('load');
         // await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(20000);
+        await page.waitForTimeout(3000);
         // await page.waitForURL('https://capital.com/trading/platform/');
         await expect(page).toHaveURL('https://capital.com/trading/platform/');
         // expect(await page.locator('object.logo')).toBeVisible();
-        await page.waitForTimeout(10000);
+        await page.waitForTimeout(3000);
         await page.goBack();
     });
 })

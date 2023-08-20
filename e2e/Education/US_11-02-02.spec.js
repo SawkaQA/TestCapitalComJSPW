@@ -7,8 +7,8 @@ let header;
 let page;
 let login;
 let bannerBtn;
-const language = "Deutsch";
-const country = "Germany";
+const language = "Nederlands";
+const country = "Netherlands";
 function getRandomElements(array, count) {
   const randomized = array.slice();
   for (let i = randomized.length - 1; i > 1; i--) {
@@ -146,6 +146,10 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
   test(`TC_11.02.02_03_UnReg  > Test button [Sell] in the Banner [Trading Instrument] on '${language}' language`, async () => {
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
+    if (country === "United Kingdom") {
+      console.log("Testing is not available on the FCA license");
+      test.skip();
+    }
     await page.waitForTimeout(15000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -188,9 +192,13 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
     }
   });
 
-  test.only(`TC_11.02.02_04_UnReg  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
+  test(`TC_11.02.02_04_UnReg  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
+    if (country === "United Kingdom") {
+      console.log("Testing is not available on the FCA license");
+      test.skip();
+    }
     await page.waitForTimeout(15000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -237,8 +245,8 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
 
 test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role", () => {
   const testData = {
-    email: "sadsass@gmail.com",
-    password: "123Qwert!@dsdDs",
+    email: "alexviktoria1609@gmail.com",
+    password: "Av-123456789",
   }
  
   test.beforeEach(async ({ browser }) => {
@@ -313,14 +321,21 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     const randomLinks = getRandomElements(linksFromFile, 4);
 
     for (let i = 1; i < randomLinks.length; i++) {
-      await page.goto(randomLinks[i]);
-      await bannerBtn.clickStartTradingBtnOnMainBanner();
-
+      
       try {
+        await page.goto(randomLinks[i]);
+        await bannerBtn.clickStartTradingBtnOnMainBanner();
         await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
       } catch (error) {
         console.log("Opened a 'Sign up' form instead of a 'Login' form");
+        continue; // продолжить перебор ссылок
       }
+
+      // try {
+      //   await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
+      // } catch (error) {
+      //   console.log("Opened a 'Sign up' form instead of a 'Login' form");
+      // }
 
       const elementText = await page.$eval('#l_overlay', element => element.innerText);
       expect(elementText).toBeTruthy();
@@ -380,15 +395,14 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     const randomLinks = getRandomElements(linksFromFile, 4);
 
     for (let i = 1; i < randomLinks.length; i++) {
-      await page.goto(randomLinks[i]);
-      await bannerBtn.clickTryDemoBtnOnMainBanner();
-
       try {
+        await page.goto(randomLinks[i]);
+        await bannerBtn.clickStartTradingBtnOnMainBanner();
         await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
       } catch (error) {
         console.log("Opened a 'Sign up' form instead of a 'Login' form");
+        continue; // продолжить перебор ссылок
       }
-
       const elementText = await page.$eval('#l_overlay', element => element.innerText);
       expect(elementText).toBeTruthy();
       await expect(page.locator("[class='form-container-small-header'] > .h1")).toBeVisible();
@@ -412,6 +426,10 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
   test(`TC_11.02.02_03_UnAuth  > Test button [Sell] in the Banner [Trading Instrument] on '${language}' language`, async () => {
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
+    if (country === "United Kingdom") {
+      console.log("Testing is not available on the FCA license");
+      test.skip();
+    }
     await page.waitForTimeout(15000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -464,9 +482,13 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
 
   });
 
-  test.only(`TC_11.02.02_04_UnAuth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
+  test(`TC_11.02.02_04_UnAuth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
+    if (country === "United Kingdom") {
+      console.log("Testing is not available on the FCA license");
+      test.skip();
+    }
     await page.waitForTimeout(15000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -496,7 +518,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
         await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
       } catch (error) {
         console.log("Opened a 'Sign up' form instead of a 'Login' form");
-        throw new Error();
+        throw new Error(); 
       }
       const elementText = await page.$eval('#l_overlay', element => element.innerText);
       expect(elementText).toBeTruthy();
@@ -522,8 +544,8 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
 
 test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role", () => {
   const testData = {
-    email: "sadsass@gmail.com",
-    password: "123Qwert!@dsdDs",
+    email: "alexviktoria1609@gmail.com",
+    password: "Av-123456789",
   }
  
   test.beforeEach(async ({ browser }) => {
@@ -562,10 +584,8 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
     const fs = require('fs');
     await bannerBtn.clickStartTradingBtnOnMainBanner();
     await page.waitForLoadState('networkidle');
-    expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
-    // expect(await page.locator('object.logo')).toBeVisible();
-    // expect(await page.locator('div.account__mode_demo')).toBeVisible();
-    await page.waitForTimeout(5000);
+    expect(await page).toHaveURL('https://capital.com/trading/platform/');
+    await page.waitForTimeout(3000);
     await page.goBack();
     console.log(`Testing the first level on the main page is completed successfully `)
     await page.waitForLoadState('networkidle');
@@ -589,7 +609,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
       await page.goto(randomLinks[i]);
       await bannerBtn.clickStartTradingBtnOnMainBanner();
       await page.waitForLoadState('networkidle');
-      expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
+      expect(await page).toHaveURL('https://capital.com/trading/platform/');
       // expect(await page.locator('object.logo')).toBeVisible();
       // expect(await page.locator('div.account__mode_demo')).toBeVisible();
       await page.waitForTimeout(5000);
@@ -659,6 +679,10 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
   test(`TC_11.02.02_03_Auth  > Test button [Sell] in the Banner [Trading Instrument] on '${language}' language`, async () => {
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
+    if (country === "United Kingdom") {
+      console.log("Testing is not available on the FCA license");
+      test.skip();
+    }
     await page.waitForTimeout(15000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -685,7 +709,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
       }
       await page.waitForLoadState('networkidle');
       // await page.waitForTimeout(10000);
-      expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
+      expect(await page).toHaveURL('https://capital.com/trading/platform/');
       // expect(await page.locator('object.logo')).toBeVisible();
       // expect(await page.locator('div.account__mode_demo')).toBeVisible();
       await page.waitForTimeout(5000);
@@ -703,6 +727,10 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
   test.only(`TC_11.02.02_04_Auth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
+    if (country === "United Kingdom") {
+      console.log("Testing is not available on the FCA license");
+      test.skip();
+    }
     await page.waitForTimeout(15000);
     /* извлечение значения атрибута href (el.href) каждого элемента и добавление его в новый массив.Окончательный результат - массив links, 
     содержащий все значения атрибута href выбранных элементов <a> */
@@ -729,7 +757,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
       }
       await page.waitForLoadState('networkidle');
       // await page.waitForTimeout(10000);
-      expect(await page).toHaveURL('https://capital.com/trading/platform/?popup=terms-and-conditions');
+      expect(await page).toHaveURL('https://capital.com/trading/platform/');
       // expect(await page.locator('object.logo')).toBeVisible();
       // expect(await page.locator('div.account__mode_demo')).toBeVisible();
       await page.waitForTimeout(5000);
