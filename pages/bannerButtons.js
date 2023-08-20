@@ -5,14 +5,21 @@ class BannerBtn {
         this.page = page;
         this.StartTradingBtnOnMainBanner = page.locator('a.btn--darkText[data-type="top_banner_btn"]')
         this.TryDemoBtnOnMainBanner = page.locator('.btn--emptyblack')
-        this.TradeBtnOnWidgetMostTraded = page.locator('div[data-iid="27045129890124996"]')
+        this.TradeBtnOnWidgetMostTraded = page.$$('.mostTraded__btn')
         this.SellBtnOnBanner = page.locator('a.button-main.sell')
         this.BuyBtnOnBanner = page.locator('a.button-main.buy')
         // Footer
         this.DownloadOnAppStoreBtn = page.locator('[data-type = "banner_capital_ios"]')
         this.DownloadOnGooglePlayLink = page.locator('[data-type = "banner_capital_google"]')
         this.ExploreWebPlatformLink = page.locator('[data-type="banner_capital_platform"]')
-        this.CreateAndVerifyBtn = page.locator('.regSteps__shape > .js_signup')
+        this.CreateAndVerifyBtn = page.locator('i.regSteps__item.js_signup')
+        this.LogoAppStore = page.locator('a.globalnav-link-apple')
+        this.IconCapital = page.locator('picture#ember3')
+        this.ProductNameOnAppstore = page.getByRole('heading', { name: 'Capital.com: Trading & Finance 17+' })
+        this.LinkCapitalComOnAppstore = page.getByRole('heading', { name: 'Capital Com SV Investments Limited' })
+        this.LogoGooglePlay = page.locator('a.f0UV3d')
+        this.ProdactNameOnGoogleplay = page.locator('h1.Fd93Bb.F5UCq.p5VxAd')
+        this.LinkCapitalComOnGoogleplay = page.locator('div.Vbfug.auoIOc')
     }
 
     // Methods
@@ -25,9 +32,22 @@ class BannerBtn {
         await this.TryDemoBtnOnMainBanner.click()
     }
 
+    isElementVisible(element) {
+        return element.boundingBox() !== null;
+      }
+
     async clickTradeBtnOnWidgetMostTraded() {
-       await this.TradeBtnOnWidgetMostTraded.click()    
-    }
+        const buttons = await this.TradeBtnOnWidgetMostTraded;
+        for (const button of buttons) {
+          if (await this.isElementVisible(button)) {
+            await button.click();
+            return;
+          }
+        }
+        console.log(`For test on FCA license the button [Trade] doen't displayed `)
+        throw new Error();
+      }
+    
 
     async clickDownloadOnAppStoreBtn() {
         await this.DownloadOnAppStoreBtn.click();
@@ -35,7 +55,14 @@ class BannerBtn {
 
     async clickDownloadOnGooglePlayLink() {
         await this.DownloadOnGooglePlayLink.click();
+        await this.page.waitForNavigation(); // ожидание загрузки новой страницы
+        const currentUrl = await this.page.url();
+        if (currentUrl === 'https://apps.apple.com/IE/app/id1230088754?mt=8') {
+          console.log('The link to App Store instead of Google Play');
+          throw new Error();
+        }
     }
+
 
     async clickExploreWebPlatformLink() {
         await this.ExploreWebPlatformLink.click();

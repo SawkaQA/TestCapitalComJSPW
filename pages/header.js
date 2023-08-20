@@ -1,5 +1,6 @@
-// const { expect } = require("@playwright/test");
-
+const { test, expect } = require("@playwright/test");
+const language = "Nederlands"
+const country = "Netherlands";
 exports.Header = class Header {
     constructor(page) {
         this.page = page;
@@ -10,6 +11,8 @@ exports.Header = class Header {
         this.CountryAndLang = page.locator('div .licLangSw__btn')
         this.DropdownCountry = page.getByRole("textbox")
         this.AcceptAllCookies = page.locator('#onetrust-accept-btn-handler')
+        this.GetCountry = page.getByRole("link", { name: country })
+        this.GetLanguage = page.getByRole("link", { name: language })
         // Countries
         this.GermanyCountry = page.locator('li.js-analyticsClick[data-type="nav_country_germany"]')
         this.TurkeyCountry = page.locator('li.js-analyticsClick[data-type="nav_country_turkey"]')
@@ -25,7 +28,7 @@ exports.Header = class Header {
     }
 
     // Methods
-    async clickMainLogo(){
+    async clickMainLogo() {
         await this.getMainLogo.click();
     }
 
@@ -42,7 +45,12 @@ exports.Header = class Header {
     }
 
     async clickPositionTrading() {
-        await this.PositionTrading.click();
+        if (await this.PositionTrading.isVisible()) {
+            await this.PositionTrading.click();
+        } else {
+            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
+            test.skip();
+        }
     }
 
     async clickSharesTrading() {
@@ -57,8 +65,12 @@ exports.Header = class Header {
         await this.CountryAndLang.hover();
     }
 
-    async clickUnitedKigdomCoutry() {
-        await this.UnitedKingdomCountry.click();
+    async clickGetCountry() {
+        await this.GetCountry.click();
+    }
+
+    async clickGetLanguage() {
+        await this.GetLanguage.click();
     }
 
 }
