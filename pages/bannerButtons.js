@@ -31,23 +31,16 @@ class BannerBtn {
     async clickTryDemoBtnOnMainBanner() {
         await this.TryDemoBtnOnMainBanner.click()
     }
-
-    isElementVisible(element) {
-        return element.boundingBox() !== null;
-      }
-
-    async clickTradeBtnOnWidgetMostTraded() {
-        const buttons = await this.TradeBtnOnWidgetMostTraded;
-        for (const button of buttons) {
-          if (await this.isElementVisible(button)) {
-            await button.click();
-            return;
-          }
-        }
-        console.log(`For test on FCA license the button [Trade] doen't displayed `)
-        throw new Error();
-      }
     
+    async clickTradeBtnOnWidgetMostTraded() {
+        try {
+            await this.TradeBtnOnWidgetMostTraded.toBeVisible();
+            await this.TradeBtnOnWidgetMostTraded.click();
+        } catch (error) {
+            console.log(`For test on FCA license the button [Trade] doen't displayed `)
+            throw new Error();
+        }
+    }
 
     async clickDownloadOnAppStoreBtn() {
         await this.DownloadOnAppStoreBtn.click();
@@ -58,8 +51,8 @@ class BannerBtn {
         await this.page.waitForNavigation(); // ожидание загрузки новой страницы
         const currentUrl = await this.page.url();
         if (currentUrl === 'https://apps.apple.com/IE/app/id1230088754?mt=8') {
-          console.log('The link to App Store instead of Google Play');
-          throw new Error();
+            console.log('The link to App Store instead of Google Play');
+            throw new Error();
         }
     }
 

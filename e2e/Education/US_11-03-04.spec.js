@@ -8,14 +8,15 @@ let header;
 let page;
 let bannerBtn;
 let signup;
+let login;
 
 const testData = {
     email: "alexviktoria1609@gmail.com",
     password: "Av-123456789",
 }
 
-const language = "Nederlands"
-const country = "Netherlands";
+const language = "en"
+const country = "United Kingdom";
 
 test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Role", () => {
 
@@ -157,7 +158,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading]  on UnReg Ro
         await bannerBtn.clickCreateAndVerifyBtn();
         await page.waitForLoadState('networkidle');
         // await page.waitForTimeout(5000);
-        expect(await signup.FormSignUp).toBeVisible();
+        await expect(signup.FormSignUp).toBeVisible();
         expect(await signup.LoginLinkForm).toBeVisible();
         expect(await signup.UserName).toHaveAttribute("type", "email");
         expect(await signup.Password).toHaveAttribute("type", "password");
@@ -179,9 +180,9 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
         await page.goto("/");
          // user unauthorization
          await login.loginAndContinue(testData.email, testData.password);
-         await page.waitForLoadState('networkidle');
+        //  await page.waitForLoadState('networkidle');
          await page.goBack();
-         await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('networkidle');
          await login.logoutUser();
         // select country and language
         await header.hoverCountryAndLang();
@@ -195,115 +196,67 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on UnAuth Ro
     test(`TC_11.03.04_01_UnAuth  > Test button [Start Trading] in Main banner on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
         await header.clickPositionTrading()
-
-
         await bannerBtn.clickStartTradingBtnOnMainBanner();
-        try {
-            await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
-        } catch (error) {
-            console.log("Opened a 'Sign up' form instead of a 'Login' form");
-            throw new Error();
-        }
-        const elementText = await page.$eval('#l_overlay', element => element.innerText);
-        expect(elementText).toBeTruthy();
-        await expect(page.locator("div.form-container-small-header.s-between")).toBeVisible();
-        await expect(page.locator("#l_f_email > .field__control")).toHaveAttribute("type", "email");
-        await expect(page.locator("#l_f_pass > .field__control")).toHaveAttribute("type", "password");
-        expect(await page.locator("input[name=l_rem]").isChecked());
-        await expect(page.locator('[class="l_btn_forgot"]')).toBeVisible();
-        await expect(page.locator(".form-container-white > .form-container-small-content > form > .btn")).toBeVisible();
-        await expect(page.locator(".form-container-white > .form-container-small-header > p > .l_btn_signup")).toBeVisible();
-        await page.locator("#l_overlay .form-container-white .button-cleared").click();
+        await login.FormLoginBeVisible()
+        await expect(login.HeaderNameLogIn).toBeVisible();
+        expect(await login.UserName).toHaveAttribute("type", "email");
+        expect(await login.Password).toHaveAttribute("type", "password");
+        expect(await login.LogMeAfter).isChecked();
+        await expect(login.ForgotPasswordLink).toBeVisible();
+        await expect(login.ContinueButton).toBeVisible();
+        await expect(login.SignUpLinkForm).toBeVisible();
+        await login.CloseLoginFormBtn.click();
     })
 
     test(`TC_11.03.04_02_UnAuth  > Test button [Try Demo] in Main banner on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
+        await header.clickPositionTrading()
         await bannerBtn.clickTryDemoBtnOnMainBanner();
-        try {
-            await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
-        } catch (error) {
-            console.log("Opened a 'Sign up' form instead of a 'Login' form");
-            throw new Error();
-        }
-        const elementText = await page.$eval('#l_overlay', element => element.innerText);
-        expect(elementText).toBeTruthy();
-        await expect(page.locator("div.form-container-small-header.s-between")).toBeVisible();
-        await expect(page.locator("#l_f_email > .field__control")).toHaveAttribute("type", "email");
-        await expect(page.locator("#l_f_pass > .field__control")).toHaveAttribute("type", "password");
-        expect(await page.locator("input[name=l_rem]").isChecked());
-        await expect(page.locator('[class="l_btn_forgot"]')).toBeVisible();
-        await expect(page.locator(".form-container-white > .form-container-small-content > form > .btn")).toBeVisible();
-        await expect(page.locator(".form-container-white > .form-container-small-header > p > .l_btn_signup")).toBeVisible();
-        await page.locator("#l_overlay .form-container-white .button-cleared").click();
+        await login.FormLoginBeVisible()
+        await expect(login.HeaderNameLogIn).toBeVisible();
+        expect(await login.UserName).toHaveAttribute("type", "email");
+        expect(await login.Password).toHaveAttribute("type", "password");
+        expect(await login.LogMeAfter).isChecked();
+        await expect(login.ForgotPasswordLink).toBeVisible();
+        await expect(login.ContinueButton).toBeVisible();
+        await expect(login.SignUpLinkForm).toBeVisible();
+        await login.CloseLoginFormBtn.click();
     });
 
     test(`TC_11.03.04_03_UnAuth  > Test buttons [Trade] on Widget "Most traded" on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
-
-        try {
-            await bannerBtn.TradeBtnOnWidgetMostTraded.isVisible();
-            await bannerBtn.clickTradeBtnOnWidgetMostTraded();
-        } catch (error) {
-            console.log(`For test on '${country}' the button [Trade] doen't displayed `)
-            throw new Error();
-        }
-        await page.waitForTimeout(20000);
-        try {
-            await expect(page.locator("#l_overlay > .form-container-white")).toBeVisible();
-        } catch (error) {
-            console.log("Opened a 'Sign up' form instead of a 'Login' form");
-            throw new Error();
-        }
-        const elementText = await page.$eval('#l_overlay', element => element.innerText);
-        expect(elementText).toBeTruthy();
-        await expect(page.locator("div.form-container-small-header.s-between")).toBeVisible();
-        await expect(page.locator("#l_f_email > .field__control")).toHaveAttribute("type", "email");
-        await expect(page.locator("#l_f_pass > .field__control")).toHaveAttribute("type", "password");
-        expect(await page.locator("input[name=l_rem]").isChecked());
-        await expect(page.locator('[class="l_btn_forgot"]')).toBeVisible();
-        await expect(page.locator(".form-container-white > .form-container-small-content > form > .btn")).toBeVisible();
-        await expect(page.locator(".form-container-white > .form-container-small-header > p > .l_btn_signup")).toBeVisible();
-        await page.locator("#l_overlay .form-container-white .button-cleared").click();
+        await header.clickPositionTrading();
+        await bannerBtn.clickTradeBtnOnWidgetMostTraded();
+        await login.FormLoginBeVisible()
+        await expect(login.HeaderNameLogIn).toBeVisible();
+        expect(await login.UserName).toHaveAttribute("type", "email");
+        expect(await login.Password).toHaveAttribute("type", "password");
+        expect(await login.LogMeAfter).isChecked();
+        await expect(login.ForgotPasswordLink).toBeVisible();
+        await expect(login.ContinueButton).toBeVisible();
+        await expect(login.SignUpLinkForm).toBeVisible();
+        await login.CloseLoginFormBtn.click();
     });
 
     test(`TC_11.03.04_04_UnAuth  > Test button [Download on the App Store] in the block "Sign up and trade smart today"  on '${language}' language`, async () => {
         bannerBtn = new BannerBtn(page);
         header = new Header(page);
+        login = new LoginPage(page);
         await header.getEducationMenu.hover();
         await page.waitForLoadState('networkidle');
-        const isVisiblePosition = page.locator('a[data-type="nav_id528"]');
-
-        if (await isVisiblePosition.isVisible()) {
-            await isVisiblePosition.click();
-        } else {
-            console.log(`For test on '${language}' language the page "Education->Position Trading" doesn't exist on production`);
-            test.skip();
-        }
+        await header.clickPositionTrading();
         await bannerBtn.clickDownloadOnAppStoreBtn();
         // await page.locator('.onelink-mobile-url').first().click();
         await expect(page.getByRole('link', { name: 'App Store' })).toBeVisible();
@@ -418,7 +371,7 @@ test.describe("US_11-03-04_Education > Menu item [Position Trading] on Auth Role
         // user authorization
         await login.clickBtnLogIn();
         await login.validLogin(testData.email, testData.password);
-        await login.continueButton.waitFor();
+        // await login.continueButton.waitFor();
         await login.continueButton.click();
         await page.waitForLoadState('networkidle');
         await page.goBack();

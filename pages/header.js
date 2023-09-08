@@ -1,7 +1,8 @@
 const { test, expect } = require("@playwright/test");
-const language = "Nederlands"
-const country = "Netherlands";
+let language = "English";
+let country = "United Kingdom";
 exports.Header = class Header {
+    
     constructor(page) {
         this.page = page;
         this.getMainLogo = page.locator('[class="cc-logo hideXs"]')

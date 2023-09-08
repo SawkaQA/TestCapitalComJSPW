@@ -7,8 +7,8 @@ let header;
 let page;
 let login;
 let bannerBtn;
-const language = "Nederlands";
-const country = "Netherlands";
+const language = "Polski";
+const country = "Poland";
 function getRandomElements(array, count) {
   const randomized = array.slice();
   for (let i = randomized.length - 1; i > 1; i--) {
@@ -156,6 +156,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
     const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
     if (links.length === 0) {
       console.log("There are no links on this page and testing of the second level is impossible");
+      test.skip();
     } else {
       console.log("links", links);
     }
@@ -205,6 +206,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnReg Role"
     const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
     if (links.length === 0) {
       console.log("There are no links on this page and testing of the second level is impossible");
+      test.skip();
     } else {
       console.log("links", links);
     }
@@ -259,8 +261,8 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     // user unauthorization
     await login.clickBtnLogIn();
     await login.validLogin(testData.email, testData.password);
-    await login.continueButton.waitFor();
-    await login.continueButton.click();
+    await login.ContinueButton.waitFor();
+    await login.ContinueButton.click();
     await page.waitForLoadState('networkidle');
     await page.goBack();
     await page.waitForLoadState('networkidle');
@@ -436,6 +438,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
     if (links.length === 0) {
       console.log("There are no links on this page and testing of the second level is impossible");
+      test.skip();
     } else {
       console.log("links", links);
     }
@@ -482,7 +485,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
 
   });
 
-  test(`TC_11.02.02_04_UnAuth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
+  test.only(`TC_11.02.02_04_UnAuth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
     if (country === "United Kingdom") {
@@ -495,6 +498,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on UnAuth Role
     const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
     if (links.length === 0) {
       console.log("There are no links on this page and testing of the second level is impossible");
+      test.skip();
     } else {
       console.log("links", links);
     }
@@ -558,8 +562,8 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
     // user unauthorization
     await login.clickBtnLogIn();
     await login.validLogin(testData.email, testData.password);
-    await login.continueButton.waitFor();
-    await login.continueButton.click();
+    await login.ContinueButton.waitFor();
+    await login.ContinueButton.click();
     await page.waitForLoadState('networkidle');
     await page.goBack();
     await page.waitForLoadState('networkidle');
@@ -689,6 +693,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
     const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
     if (links.length === 0) {
       console.log("There are no links on this page and testing of the second level is impossible");
+      test.skip();
     } else {
       console.log("links", links);
     }
@@ -724,7 +729,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
 
   });
 
-  test.only(`TC_11.02.02_04_Auth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
+  test(`TC_11.02.02_04_Auth  > Test button [Buy] in the Banner [Trading Instrument] on '${language}' language`, async () => {
     bannerBtn = new BannerBtn(page);
     const fs = require('fs');
     if (country === "United Kingdom") {
@@ -737,6 +742,7 @@ test.describe("US_11-02-02_Education > Menu item [Shares trading] on Auth Role",
     const links = await page.$$eval('a[data-type="sidebar_deeplink"]', (elements) => elements.map((el) => el.href));
     if (links.length === 0) {
       console.log("There are no links on this page and testing of the second level is impossible");
+      test.skip();
     } else {
       console.log("links", links);
     }
